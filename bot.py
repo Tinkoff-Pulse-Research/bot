@@ -4,9 +4,6 @@ from aiogram import Bot, Dispatcher, executor, types
 from typing import Optional
 import logging
 
-os.environ['TOKEN'] = "6073666087:AAHLkHMvcJIzWL3xDBQmT8GC9KJ9jk0QbA4"
-os.environ['API_URL'] = 'http://127.0.0.1:3000'
-
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=os.environ["TOKEN"], parse_mode=types.ParseMode.HTML)
 dp = Dispatcher(bot)
