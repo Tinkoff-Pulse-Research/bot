@@ -60,7 +60,6 @@ async def echo(message: types.Message):
     await bot.send_chat_action(message.chat.id, "typing")
     text = re.split(r"\s", message.text.strip())
     definition, key = await get_term_definition(remove_punctuation(message.text.strip()))
-    logging.info(f"Definition: {definition}")
     if definition:
         return (
             await message.answer(f"ℹ️ <b>{key}</b> – {definition}")
