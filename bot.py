@@ -43,7 +43,7 @@ async def get_term_definition(term: str) -> Optional[tuple[str, str]]:
                 logging.error(f"Got API error while getting term definition. ({await res.text()})")
                 return None
             data = await res.json()
-            print(data)
+            # print(data)
             return (data['result']['definition'], data['result']['key'])\
                 if data['status'] == 'ok' else ("", "")
 
@@ -76,12 +76,12 @@ async def echo(message: types.Message):
         ind, method = item.split("_")
         if ":" in ind:
             s_ind, f_ind = map(int, ind.split(":"))
-            print(text[s_ind:f_ind + 1], result['result']['highlight'][item])
+            # print(text[s_ind:f_ind + 1], result['result']['highlight'][item])
             text[s_ind] = f"<code><b>{text[s_ind]}"
             text[f_ind] = f"{text[f_ind]}</b></code>"
         else:
             ind = int(ind)
-            print(text[ind], result['result']['highlight'][item])
+            # print(text[ind], result['result']['highlight'][item])
             if method == 'ml':
                 text[ind] = f"<b><u>{text[ind]}</u></b>"
             elif method == 'determined':
