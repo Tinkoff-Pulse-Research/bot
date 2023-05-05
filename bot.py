@@ -1,8 +1,13 @@
 import os
+import re
+
 from aiohttp import ClientSession
 from aiogram import Bot, Dispatcher, executor, types
 from typing import Optional
 import logging
+
+os.environ['TOKEN'] = "6073666087:AAG5Tkyebp886eBmyj-c83FLyftGFVBJJes"
+os.environ['API_URL'] = 'http://127.0.0.1:3000'
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=os.environ["TOKEN"], parse_mode=types.ParseMode.HTML)
@@ -54,7 +59,7 @@ async def start(message: types.Message):
 @dp.message_handler()
 async def echo(message: types.Message):
     await bot.send_chat_action(message.chat.id, "typing")
-    text = message.text.strip().split()
+    text = re.split(r"\s", message.text.strip())
     definition, key = await get_term_definition(remove_punctuation(message.text.strip()))
     logging.info(f"Definition: {definition}")
     if definition:
