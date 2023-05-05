@@ -6,8 +6,6 @@ from aiogram import Bot, Dispatcher, executor, types
 from typing import Optional
 import logging
 
-os.environ['TOKEN'] = "6073666087:AAG5Tkyebp886eBmyj-c83FLyftGFVBJJes"
-os.environ['API_URL'] = 'http://127.0.0.1:3000'
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=os.environ["TOKEN"], parse_mode=types.ParseMode.HTML)
@@ -52,7 +50,8 @@ async def get_term_definition(term: str) -> Optional[tuple[str, str]]:
 async def start(message: types.Message):
     await message.answer(
         "👋 <b>Привет, товарищ!</b> Я найду биржевой сленг в любом предложенном тексте."
-        " Чтобы начать, просто отправь его мне 😏"
+        " Чтобы начать, просто отправь его мне 😏.\n"
+        "<i>ℹ️ Или же отправь мне любой термин и я объясню его</i>"
     )
 
 
@@ -64,12 +63,11 @@ async def echo(message: types.Message):
     logging.info(f"Definition: {definition}")
     if definition:
         return (
-            await message.answer(f"<b>{key}</b> – {definition}")
+            await message.answer(f"ℹ️ <b>{key}</b> – {definition}")
             if definition
             else await message.answer("<b>😢 Определение не найдено</b>")
         )
     result = await predict(message.text)
-    logging.info(result)
     if not result['result']['slang']:
         return await message.answer("<b>🙃 Сленг не найден</b>")
     for item in result['result']['highlight']:
@@ -86,7 +84,11 @@ async def echo(message: types.Message):
                 text[ind] = f"<b><u>{text[ind]}</u></b>"
             elif method == 'determined':
                 text[ind] = f"<code><b>{text[ind]}</b></code>"
-    await message.answer(" ".join(text))
+    await message.answer(
+        f'{" ".join(text)}\n\n'
+        f'<i>ℹ️ Чтоб узнать определение любого слова кликни на термин '
+        f'(выделенный <code>таким шрифтом</code>) и отправь мне</i>'
+    )
 
 
 if __name__ == "__main__":
